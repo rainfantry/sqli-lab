@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>22nd Survey Division — Survey CAD Drafting</title>
+    <meta name="description" content="Precision survey CAD drafting solutions. Veteran-owned. Sydney, NSW.">
+    <meta name="keywords" content="survey drafting, CAD, land surveyor, drafting, construction, veteran-owned, Sydney, OSINT, red team">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: #0a0a0c;
+            color: #b0b0b0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Courier New', monospace;
+            font-size: 15px;
+            line-height: 1.7;
+        }
+
+        /* HEADER */
+        header {
+            background: linear-gradient(180deg, #0a0a0c 0%, #0f0f12 100%);
+            border-bottom: 1px solid #1a1a1f;
+            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px;
+        }
+        .logo {
+            font-size: 16px;
+            font-weight: 700;
+            color: #e0e0e0;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+        .logo span { color: #c0392b; }
+
+        /* TABS */
+        .tabs { display: flex; gap: 0; flex-wrap: wrap; }
+        .tab {
+            background: none; border: none; color: #666;
+            font-family: inherit; font-size: 12px; padding: 20px 14px;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            border-bottom: 2px solid transparent; transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .tab:hover { color: #b0b0b0; }
+        .tab.active { color: #e0e0e0; border-bottom-color: #c0392b; }
+
+        /* SUB-TABS */
+        .sub-tabs {
+            display: flex; gap: 0; margin-bottom: 25px;
+            border-bottom: 1px solid #1a1a1f;
+        }
+        .sub-tab {
+            background: none; border: none; color: #555;
+            font-family: inherit; font-size: 12px; padding: 12px 18px;
+            cursor: pointer; text-transform: uppercase; letter-spacing: 1px;
+            border-bottom: 2px solid transparent; transition: all 0.2s;
+        }
+        .sub-tab:hover { color: #999; }
+        .sub-tab.active { color: #c0392b; border-bottom-color: #c0392b; }
+        .sub-panel { display: none; }
+        .sub-panel.active { display: block; }
+
+        /* HERO */
+        .hero {
+            position: relative; height: 70vh; min-height: 400px;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center; overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute; inset: 0;
+            background: url('hero-dawn.jpg') center/cover no-repeat;
+            filter: brightness(0.3);
+        }
+        .hero-content { position: relative; z-index: 1; padding: 20px; }
+        .hero h1 {
+            font-size: clamp(28px, 5vw, 48px); color: #e8e8e8;
+            font-weight: 700; letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 12px;
+        }
+        .hero h1 span { color: #c0392b; }
+        .hero p { font-size: clamp(14px, 2vw, 18px); color: #888; max-width: 600px; margin: 0 auto; }
+        .hero .tagline {
+            margin-top: 20px; font-size: 12px; color: #555;
+            letter-spacing: 3px; text-transform: uppercase;
+        }
+
+        /* SECTIONS */
+        .page-section { display: none; }
+        .page-section.active { display: block; }
+        .section { max-width: 1200px; margin: 0 auto; padding: 60px 20px; }
+        .section h2 {
+            font-size: 22px; color: #e0e0e0; margin-bottom: 30px;
+            padding-bottom: 10px; border-bottom: 1px solid #1a1a1f;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        /* SERVICE CARDS */
+        .services-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;
+        }
+        .service-card {
+            background: #111114; border: 1px solid #1a1a1f; padding: 30px;
+            border-left: 3px solid #c0392b; transition: border-color 0.2s;
+        }
+        .service-card:hover { border-left-color: #e74c3c; }
+        .service-card h3 {
+            color: #d0d0d0; font-size: 16px; margin-bottom: 12px;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .service-card p { color: #808080; font-size: 14px; }
+        .service-card .tech { margin-top: 15px; font-size: 12px; color: #555; }
+        .service-card .tech span {
+            display: inline-block; background: #1a1a1f; padding: 2px 8px;
+            margin: 2px 4px 2px 0; border: 1px solid #252530;
+        }
+
+        /* ABOUT */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start; }
+        .about-img {
+            width: 100%; height: 300px; object-fit: cover;
+            filter: brightness(0.8); border: 1px solid #1a1a1f;
+        }
+        .about-text p { margin-bottom: 15px; }
+        .about-text .highlight { color: #c0392b; font-weight: 600; }
+        .stat-row { display: flex; gap: 30px; margin-top: 25px; padding-top: 20px; border-top: 1px solid #1a1a1f; }
+        .stat { text-align: center; }
+        .stat .num { font-size: 28px; color: #c0392b; font-weight: 700; }
+        .stat .label { font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
+
+        /* CONTACT */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .contact-info p { margin-bottom: 12px; }
+        .contact-info a { color: #c0392b; text-decoration: none; }
+        .contact-info a:hover { text-decoration: underline; }
+        .contact-label { font-size: 12px; color: #555; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+        .contact-value { color: #d0d0d0; margin-bottom: 20px; }
+
+        /* FORM */
+        .form-group { margin-bottom: 16px; }
+        .form-group label {
+            display: block; font-size: 12px; color: #555;
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%; background: #111114; border: 1px solid #1a1a1f;
+            color: #d0d0d0; padding: 10px 14px; font-family: inherit;
+            font-size: 14px; transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            border-color: #c0392b; outline: none;
+        }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .form-group select option { background: #111114; color: #d0d0d0; }
+        .form-btn {
+            background: #c0392b; color: #fff; border: none; padding: 12px 30px;
+            font-family: inherit; font-size: 14px; text-transform: uppercase;
+            letter-spacing: 1px; cursor: pointer; transition: background 0.2s;
+        }
+        .form-btn:hover { background: #e74c3c; }
+        .form-msg { margin-top: 12px; font-size: 14px; }
+        .form-msg.ok { color: #44ff44; }
+        .form-msg.err { color: #ff4444; }
+
+        /* GALLERY */
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 10px;
+        }
+        .gallery-grid img {
+            width: 100%; height: 200px; object-fit: cover;
+            filter: brightness(0.7); border: 1px solid #1a1a1f; transition: filter 0.3s;
+        }
+        .gallery-grid img:hover { filter: brightness(0.9); }
+
+        /* LAB STYLES */
+        .lab-box {
+            background: #111114; border: 1px solid #1a1a1f; padding: 20px;
+            margin: 15px 0; border-left: 3px solid #c0392b;
+        }
+        .lab-box input[type="text"], .lab-box input[type="password"] {
+            background: #1a1a1f; border: 1px solid #2a2a30; color: #d0d0d0;
+            padding: 8px 12px; font-family: 'Courier New', monospace;
+            font-size: 14px; width: 300px;
+        }
+        .lab-box input:focus { border-color: #c0392b; outline: none; }
+        .lab-btn {
+            background: #c0392b; color: #0a0a0a; border: none; padding: 8px 20px;
+            font-family: 'Courier New', monospace; font-size: 14px;
+            cursor: pointer; font-weight: bold;
+        }
+        .lab-btn:hover { background: #e74c3c; }
+        .query-box {
+            background: #0d0d0f; border: 1px solid #1a1a1f; padding: 12px;
+            margin: 10px 0; font-size: 13px; color: #888;
+            word-wrap: break-word; white-space: pre-wrap;
+            font-family: 'Courier New', monospace;
+        }
+        .query-label { color: #c0392b; font-weight: bold; }
+        .result-ok { color: #44ff44; margin: 5px 0; }
+        .result-err { color: #ff4444; margin: 5px 0; }
+        .lab-hint { color: #555; font-size: 12px; margin-top: 10px; font-style: italic; }
+        .lab-tag {
+            display: inline-block; background: #1a1a1f; border: 1px solid #c0392b;
+            color: #c0392b; padding: 2px 8px; font-size: 11px; margin-right: 5px;
+        }
+        .explanation {
+            background: #0d0d10; border: 1px solid #1a1a1f; padding: 20px;
+            margin-top: 15px; border-left: 3px solid #335;
+        }
+        .explanation h4 { color: #6688cc; margin-bottom: 10px; font-size: 14px; text-transform: uppercase; }
+        .explanation p { font-size: 13px; margin-bottom: 8px; color: #999; }
+        .explanation code {
+            background: #1a1a1f; padding: 2px 6px; color: #cc8844;
+            font-family: 'Courier New', monospace;
+        }
+        .explanation table { border-collapse: collapse; margin: 10px 0; width: 100%; }
+        .explanation th {
+            background: #111114; color: #6688cc; text-align: left;
+            padding: 6px 10px; border: 1px solid #1a1a1f; font-size: 12px;
+        }
+        .explanation td { padding: 6px 10px; border: 1px solid #1a1a1f; font-size: 13px; }
+        table.lab-results { border-collapse: collapse; margin: 10px 0; width: 100%; }
+        table.lab-results th {
+            background: #111114; color: #c0392b; text-align: left;
+            padding: 8px; border: 1px solid #1a1a1f;
+        }
+        table.lab-results td { padding: 8px; border: 1px solid #1a1a1f; }
+
+        /* OSINT TOOL */
+        .osint-panel {
+            background: #111114; border: 1px solid #1a1a1f; padding: 25px;
+            border-left: 3px solid #2ecc71;
+        }
+        .osint-panel h3 { color: #2ecc71; margin-bottom: 15px; }
+        .gps-btn {
+            background: #2ecc71; color: #0a0a0a; border: none; padding: 12px 30px;
+            font-family: inherit; font-size: 14px; cursor: pointer;
+            font-weight: bold; text-transform: uppercase; letter-spacing: 1px;
+        }
+        .gps-btn:hover { background: #27ae60; }
+        .gps-btn:disabled { background: #555; cursor: not-allowed; }
+        .gps-output {
+            background: #0d0d0f; border: 1px solid #1a1a1f; padding: 15px;
+            margin-top: 15px; font-family: 'Courier New', monospace; font-size: 13px;
+            white-space: pre-wrap; display: none;
+        }
+        .gps-output.show { display: block; }
+        .gps-output .allowed { color: #2ecc71; }
+        .gps-output .blocked { color: #e74c3c; }
+        .gps-download {
+            display: none; margin-top: 10px;
+        }
+        .gps-download.show { display: inline-block; }
+        .gps-download a {
+            color: #2ecc71; text-decoration: none; border: 1px solid #2ecc71;
+            padding: 6px 16px; font-size: 13px;
+        }
+        .gps-download a:hover { background: #2ecc71; color: #0a0a0a; }
+
+        /* FOOTER */
+        footer {
+            border-top: 1px solid #1a1a1f; padding: 30px 20px;
+            text-align: center; font-size: 12px; color: #444;
+        }
+        footer a { color: #666; text-decoration: none; }
+        footer .motto { color: #333; margin-top: 8px; letter-spacing: 2px; font-style: italic; }
+
+        /* MOBILE */
+        @media (max-width: 768px) {
+            .tabs { gap: 0; }
+            .tab { padding: 20px 8px; font-size: 10px; letter-spacing: 0.5px; }
+            .about-grid, .contact-grid { grid-template-columns: 1fr; }
+            .hero { height: 50vh; min-height: 300px; }
+            .stat-row { flex-wrap: wrap; }
+            .lab-box input[type="text"] { width: 100%; }
+        }
+        @media (max-width: 480px) {
+            .header-inner { flex-direction: column; height: auto; padding: 10px 0; }
+            .tabs { flex-wrap: wrap; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <div class="logo">22nd Survey <span>Division</span></div>
+        <nav class="tabs">
+            <button class="tab active" onclick="showTab('home',this)">Home</button>
+            <button class="tab" onclick="showTab('services',this)">Services</button>
+            <button class="tab" onclick="showTab('soft',this)">Software & IT</button>
+            <button class="tab" onclick="showTab('osint',this)">OSINT</button>
+            <button class="tab" onclick="showTab('about',this)">About</button>
+            <button class="tab" onclick="showTab('gallery',this)">Gallery</button>
+            <button class="tab" onclick="showTab('contact',this)">Contact</button>
+        </nav>
+    </div>
+</header>
+
+<!-- ═══════════════════════════════════════ HOME ═══════════════════════════════════════ -->
+<div id="tab-home" class="page-section active">
+    <div class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <h1>22nd Survey <span>Division</span></h1>
+            <p>Precision survey CAD drafting. Clean plans. Fast turnaround. No half-arsed work.</p>
+            <div class="tagline">Veteran-Owned &bull; Sydney, NSW &bull; Vidimus Omnia</div>
+        </div>
+    </div>
+    <div class="section">
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Survey CAD Drafting</h3>
+                <p>Detail surveys, boundary plans, strata plans, contour mapping. Field data in, registered plans out.</p>
+            </div>
+            <div class="service-card">
+                <h3>Fast Turnaround</h3>
+                <p>Same-week delivery on standard jobs. Because waiting three weeks for a draft plan is not acceptable.</p>
+            </div>
+            <div class="service-card">
+                <h3>Precision Standards</h3>
+                <p>Every plan checked, every measurement verified. Your field data deserves better than a rushed export.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════ SERVICES ═══════════════════════════════════════ -->
+<div id="tab-services" class="page-section">
+    <div class="section">
+        <h2>Services</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Survey Plan Drafting</h3>
+                <p>Detail surveys, deposited plans, strata subdivision plans, community title plans, consolidation plans. Field data processed into clean, lodgement-ready drawings.</p>
+                <div class="tech"><span>Topcon Magnet</span><span>AutoCAD</span><span>12d Model</span><span>Civil 3D</span></div>
+            </div>
+            <div class="service-card">
+                <h3>Contour &amp; Surface Mapping</h3>
+                <p>DTM generation, contour plans, cross-sections, volume calculations. From raw field points to finished surface models.</p>
+                <div class="tech"><span>12d Model</span><span>AutoCAD</span><span>Civil 3D</span></div>
+            </div>
+            <div class="service-card">
+                <h3>Construction Setout Plans</h3>
+                <p>Setout coordinates, building footprints, road alignments, service locations. Clear plans your field crew can actually use.</p>
+                <div class="tech"><span>AutoCAD</span><span>Topcon Magnet</span></div>
+            </div>
+            <div class="service-card" onclick="showTab('osint',document.querySelectorAll('.tab')[3])" style="cursor:pointer">
+                <h3>OSINT Investigation</h3>
+                <p>Open-source intelligence gathering for critical insights. Digital footprint analysis, data correlation, and reporting.</p>
+                <div class="tech"><span>Maltego</span><span>SpiderFoot</span><span>Custom Tools</span></div>
+            </div>
+            <div class="service-card" onclick="showTab('soft',document.querySelectorAll('.tab')[2])" style="cursor:pointer">
+                <h3>Software &amp; IT Engineering</h3>
+                <p>Custom automation, data pipelines, web applications. Security testing, red team tooling, and training platforms.</p>
+                <div class="tech"><span>Python</span><span>C#</span><span>SQL</span><span>Flask</span></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════ SOFTWARE & IT ═══════════════════════════════════════ -->
+<div id="tab-soft" class="page-section">
+    <div class="section">
+        <h2>Software &amp; IT</h2>
+
+        <div class="sub-tabs">
+            <button class="sub-tab active" onclick="showSubTab('soft','redteam',this)">Red Team</button>
+            <button class="sub-tab" onclick="showSubTab('soft','blueteam',this)">Blue Team</button>
+            <button class="sub-tab" onclick="showSubTab('soft','dev',this)">Dev</button>
+        </div>
+
+        <!-- ──── RED TEAM ──── -->
+        <div id="soft-redteam" class="sub-panel active">
+            <h2 style="border-color:#c0392b;">SQL Injection Workshop</h2>
+            <p style="color:#888;margin-bottom:20px;">A real SQLite database runs in your browser. Every input is deliberately vulnerable. Exploit each level, then read the explanation below.</p>
+
+            <div id="sql-status" style="background:#111114;border:1px solid #1a1a1f;padding:8px 12px;font-size:12px;color:#666;margin-bottom:20px;">Loading SQLite database...</div>
+
+            <div class="sub-tabs" id="sql-level-tabs">
+                <button class="sub-tab active" onclick="showSubTab('sql','lv1',this)">Level 1: Login</button>
+                <button class="sub-tab" onclick="showSubTab('sql','lv2',this)">Level 2: Search</button>
+                <button class="sub-tab" onclick="showSubTab('sql','lv3',this)">Level 3: UNION</button>
+                <button class="sub-tab" onclick="showSubTab('sql','lv4',this)">Level 4: Blind</button>
+                <button class="sub-tab" onclick="showSubTab('sql','theory',this)">Theory</button>
+            </div>
+
+            <!-- LEVEL 1 -->
+            <div id="sql-lv1" class="sub-panel active">
+                <div class="lab-box">
+                    <span class="lab-tag">LEVEL 1</span> <strong style="color:#d0d0d0;">Login Bypass</strong>
+                    <p style="margin:10px 0;color:#808080;">Bypass the login form without knowing valid credentials.</p>
+                    <p style="color:#555;font-size:13px;">Vulnerability: String concatenation in WHERE clause.</p>
+                    <p><label style="color:#888;">Username:</label><br><input type="text" id="l1-user" autocomplete="off"></p>
+                    <p><label style="color:#888;">Password:</label><br><input type="text" id="l1-pass" autocomplete="off"></p>
+                    <p><button class="lab-btn" onclick="sqlLogin()">LOGIN</button></p>
+                    <div id="l1-query"></div>
+                    <div id="l1-result"></div>
+                    <div class="lab-hint">Hint: What happens if you close the quote early and add your own logic?</div>
+                </div>
+                <div class="explanation">
+                    <h4>Answer Explanation</h4>
+                    <p><strong>Payload:</strong> <code>' OR 1=1 --</code> in the password field</p>
+                    <p>The app builds this query from your input:</p>
+                    <div class="query-box">SELECT * FROM users WHERE username = 'admin' AND password = '<span style="color:#cc4444">' OR 1=1 --</span>'</div>
+                    <table>
+                        <tr><th>Piece</th><th>What It Does</th></tr>
+                        <tr><td><code>'</code></td><td>Closes the password string early. Password becomes empty string <code>''</code></td></tr>
+                        <tr><td><code>OR 1=1</code></td><td>Adds a condition that is ALWAYS true. 1 always equals 1.</td></tr>
+                        <tr><td><code>--</code></td><td>Comments out everything after it. The trailing quote is dead code.</td></tr>
+                    </table>
+                    <p>The WHERE clause becomes: <code>(username='admin' AND password='') OR 1=1</code></p>
+                    <p><code>false OR true</code> = <strong>true</strong> for every row. The entire users table is returned.</p>
+                    <p><strong>The fix:</strong> <code>cursor.execute("SELECT * FROM users WHERE username = ? AND password = ?", (user, pw))</code></p>
+                    <p>The <code>?</code> placeholder treats input as data, never as SQL code.</p>
+                </div>
+            </div>
+
+            <!-- LEVEL 2 -->
+            <div id="sql-lv2" class="sub-panel">
+                <div class="lab-box">
+                    <span class="lab-tag">LEVEL 2</span> <strong style="color:#d0d0d0;">Data Extraction</strong>
+                    <p style="margin:10px 0;color:#808080;">Search for patients by name. Then extract data from other tables.</p>
+                    <p style="color:#555;font-size:13px;">Vulnerability: Direct interpolation in LIKE clause.</p>
+                    <p><label style="color:#888;">Patient Name:</label><br><input type="text" id="l2-name" autocomplete="off"></p>
+                    <p><button class="lab-btn" onclick="sqlSearch()">SEARCH</button></p>
+                    <div id="l2-query"></div>
+                    <div id="l2-result"></div>
+                    <div class="lab-hint">Hint: Can you close the LIKE clause and UNION SELECT from another table?</div>
+                </div>
+                <div class="explanation">
+                    <h4>Answer Explanation</h4>
+                    <p><strong>Payload:</strong> <code>' UNION SELECT 1, flag, description, 4, 5, 6 FROM secrets --</code></p>
+                    <p>The app builds:</p>
+                    <div class="query-box">SELECT * FROM patient WHERE first_name LIKE '%<span style="color:#cc4444">' UNION SELECT 1, flag, description, 4, 5, 6 FROM secrets --</span>%'</div>
+                    <table>
+                        <tr><th>Piece</th><th>What It Does</th></tr>
+                        <tr><td><code>'</code></td><td>Closes the LIKE string. The <code>%</code> before it matches everything.</td></tr>
+                        <tr><td><code>UNION SELECT</code></td><td>Appends a second query's results underneath the first.</td></tr>
+                        <tr><td><code>1, flag, description, 4, 5, 6</code></td><td>6 values to match the patient table's 6 columns. <code>flag</code> and <code>description</code> go where first_name and last_name display.</td></tr>
+                        <tr><td><code>FROM secrets</code></td><td>Reads from the hidden secrets table.</td></tr>
+                        <tr><td><code>--</code></td><td>Kills the rest of the original query.</td></tr>
+                    </table>
+                    <p><strong>Key concept:</strong> UNION SELECT column count must match. Patient has 6 columns, so you SELECT 6 values. Put the data you want in the positions that display on screen.</p>
+                </div>
+            </div>
+
+            <!-- LEVEL 3 -->
+            <div id="sql-lv3" class="sub-panel">
+                <div class="lab-box">
+                    <span class="lab-tag">LEVEL 3</span> <strong style="color:#d0d0d0;">UNION Attack</strong>
+                    <p style="margin:10px 0;color:#808080;">Look up appointments by patient ID. Enumerate the entire database.</p>
+                    <p style="color:#555;font-size:13px;">Vulnerability: No type checking on integer input.</p>
+                    <p><label style="color:#888;">Patient ID:</label><br><input type="text" id="l3-id" autocomplete="off"></p>
+                    <p><button class="lab-btn" onclick="sqlUnion()">LOOKUP</button></p>
+                    <div id="l3-query"></div>
+                    <div id="l3-result"></div>
+                    <div class="lab-hint">Hint: Use ORDER BY to find column count, then UNION SELECT from sqlite_master.</div>
+                </div>
+                <div class="explanation">
+                    <h4>Answer Explanation</h4>
+                    <p><strong>Step 1 — Find column count:</strong></p>
+                    <div class="query-box">1 ORDER BY 1 --   (works)
+1 ORDER BY 4 --   (works)
+1 ORDER BY 5 --   (error — only 4 columns)</div>
+                    <p><strong>Step 2 — Enumerate tables:</strong> <code>0 UNION SELECT 1, name, 3, 4 FROM sqlite_master WHERE type='table' --</code></p>
+                    <p><strong>Step 3 — Get column names:</strong> <code>0 UNION SELECT 1, sql, 3, 4 FROM sqlite_master WHERE name='secrets' --</code></p>
+                    <p><strong>Step 4 — Extract flags:</strong> <code>0 UNION SELECT 1, flag, description, 4 FROM secrets --</code></p>
+                    <table>
+                        <tr><th>Piece</th><th>What It Does</th></tr>
+                        <tr><td><code>0</code></td><td>No patient with ID 0 — real query returns nothing, only your UNION results show.</td></tr>
+                        <tr><td><code>sqlite_master</code></td><td>SQLite's system table. Lists every table and its CREATE statement.</td></tr>
+                        <tr><td><code>ORDER BY N</code></td><td>Sorts by column N. If N exceeds column count, it errors. That's how you count columns.</td></tr>
+                    </table>
+                    <p><strong>No quotes needed</strong> — the input is injected as a raw integer, not inside a string. No quote-closing required.</p>
+                </div>
+            </div>
+
+            <!-- LEVEL 4 -->
+            <div id="sql-lv4" class="sub-panel">
+                <div class="lab-box">
+                    <span class="lab-tag">LEVEL 4</span> <strong style="color:#d0d0d0;">Blind SQLi</strong>
+                    <p style="margin:10px 0;color:#808080;">Check if a patient exists. No data returned — only yes or no.</p>
+                    <p style="color:#555;font-size:13px;">Vulnerability: Boolean-based blind injection.</p>
+                    <p><label style="color:#888;">Patient ID:</label><br><input type="text" id="l4-id" autocomplete="off"></p>
+                    <p><button class="lab-btn" onclick="sqlBlind()">CHECK</button></p>
+                    <div id="l4-query"></div>
+                    <div id="l4-result"></div>
+                    <div class="lab-hint">Hint: 1 AND (SELECT substr(flag,1,1) FROM secrets WHERE id=1)='F'</div>
+                </div>
+                <div class="explanation">
+                    <h4>Answer Explanation</h4>
+                    <p><strong>Concept:</strong> The app only says "exists" or "not found". You extract data by asking yes/no questions.</p>
+                    <p><strong>Step 1 — Confirm injection:</strong></p>
+                    <div class="query-box">1 AND 1=1   → "Patient exists"  (true AND true = true)
+1 AND 1=2   → "Patient not found" (true AND false = false)</div>
+                    <p><strong>Step 2 — Extract character by character:</strong></p>
+                    <div class="query-box">1 AND (SELECT substr(flag,1,1) FROM secrets WHERE id=1)='F'  → exists = first char is F
+1 AND (SELECT substr(flag,2,1) FROM secrets WHERE id=1)='L'  → exists = second char is L
+1 AND (SELECT substr(flag,3,1) FROM secrets WHERE id=1)='A'  → exists = third char is A</div>
+                    <p><strong>Step 3 — Speed up with binary search:</strong></p>
+                    <div class="query-box">1 AND (SELECT unicode(substr(flag,6,1)) FROM secrets WHERE id=1) > 100</div>
+                    <p>Instead of guessing each character (95 attempts worst case), binary search the ASCII value (~7 attempts per character).</p>
+                    <table>
+                        <tr><th>Concept</th><th>What It Means</th></tr>
+                        <tr><td><code>substr(flag,N,1)</code></td><td>Extract 1 character at position N from the flag.</td></tr>
+                        <tr><td><code>= 'F'</code></td><td>Compare it. If the overall query returns rows → match. If not → wrong guess.</td></tr>
+                        <tr><td><code>unicode()</code></td><td>Get the ASCII code number. Enables greater-than/less-than comparisons for binary search.</td></tr>
+                    </table>
+                    <p><strong>Flag 1:</strong> <code>FLAG{sql_injection_is_not_a_feature}</code></p>
+                    <p><strong>Flag 2:</strong> <code>FLAG{blind_as_a_bat_but_still_sees}</code></p>
+                </div>
+            </div>
+
+            <!-- THEORY -->
+            <div id="sql-theory" class="sub-panel">
+                <div class="lab-box">
+                    <h3 style="color:#d0d0d0;margin-bottom:15px;">SQL Injection Theory</h3>
+                    <table class="lab-results">
+                        <tr><th>Type</th><th>Description</th><th>Level</th></tr>
+                        <tr><td>Tautology / Auth Bypass</td><td>Inject OR 1=1 to make WHERE always true</td><td>1</td></tr>
+                        <tr><td>UNION-based</td><td>Append UNION SELECT to extract from other tables</td><td>2, 3</td></tr>
+                        <tr><td>Error-based</td><td>Force SQL errors that leak schema info</td><td>Any</td></tr>
+                        <tr><td>Blind (Boolean)</td><td>Infer data from yes/no responses</td><td>4</td></tr>
+                        <tr><td>Blind (Time)</td><td>Infer data from response delay</td><td>-</td></tr>
+                    </table>
+                </div>
+                <div class="explanation">
+                    <h4>The Fix: Parameterised Queries</h4>
+                    <p>Every vulnerability in this lab is solved by one technique:</p>
+                    <div class="query-box"><span style="color:#cc4444;">VULNERABLE (Python):</span>
+cursor.execute(f"SELECT * FROM users WHERE name = '{name}'")<br>
+<span style="color:#44ff44;">SECURE (Python):</span>
+cursor.execute("SELECT * FROM users WHERE name = ?", (name,))<br><br>
+<span style="color:#cc4444;">VULNERABLE (JavaScript):</span>
+db.exec("SELECT * FROM users WHERE name = '" + name + "'")<br>
+<span style="color:#44ff44;">SECURE (JavaScript):</span>
+db.exec("SELECT * FROM users WHERE name = ?", [name])</div>
+                    <p>The <code>?</code> placeholder tells the database to treat input as <strong>data</strong>, never as <strong>code</strong>. The database engine handles escaping internally. No amount of injected SQL will execute.</p>
+                </div>
+                <div class="explanation" style="border-left-color:#553;">
+                    <h4>MSSQL vs SQLite</h4>
+                    <p>This lab uses SQLite (in-browser). Your TAFE environment uses MSSQL. Key differences:</p>
+                    <table>
+                        <tr><th>Feature</th><th>SQLite (this lab)</th><th>MSSQL (TAFE)</th></tr>
+                        <tr><td>System tables</td><td><code>sqlite_master</code></td><td><code>sys.tables</code></td></tr>
+                        <tr><td>Top N rows</td><td><code>LIMIT 5</code></td><td><code>TOP 5</code></td></tr>
+                        <tr><td>Comments</td><td><code>--</code></td><td><code>--</code> (same)</td></tr>
+                        <tr><td>Auto-increment</td><td><code>AUTOINCREMENT</code></td><td><code>IDENTITY(1,1)</code></td></tr>
+                    </table>
+                    <p>The injection techniques are identical — only the recon commands change.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ──── BLUE TEAM ──── -->
+        <div id="soft-blueteam" class="sub-panel">
+            <div class="lab-box">
+                <h3 style="color:#3498db;">Blue Team</h3>
+                <p style="color:#666;">Defensive security, detection, incident response. Coming soon.</p>
+            </div>
+        </div>
+
+        <!-- ──── DEV ──── -->
+        <div id="soft-dev" class="sub-panel">
+            <div class="lab-box">
+                <h3 style="color:#9b59b6;">Dev</h3>
+                <p style="color:#666;">Software engineering projects, automation tools, pipelines. Coming soon.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════ OSINT ═══════════════════════════════════════ -->
+<div id="tab-osint" class="page-section">
+    <div class="section">
+        <h2>OSINT Tools</h2>
+
+        <div class="osint-panel">
+            <h3>GPS Coordinate Harvester</h3>
+            <p style="color:#888;margin-bottom:15px;">This tool demonstrates what happens when a website requests your location. Click the button below. Your browser will ask for permission. Watch what data becomes available — and what happens when you deny it.</p>
+
+            <button class="gps-btn" id="gps-btn" onclick="requestLocation()">Request Location</button>
+
+            <div id="gps-output" class="gps-output"></div>
+            <div id="gps-download" class="gps-download"><a id="gps-dl-link" href="#" download="gps_coordinates.txt">Download .txt Report</a></div>
+        </div>
+
+        <div class="explanation" style="margin-top:20px; border-left-color:#2ecc71;">
+            <h4 style="color:#2ecc71;">How This Works</h4>
+            <p>Your browser has a built-in API called <code>navigator.geolocation</code>. Any website can call it. The browser then shows a permission popup.</p>
+            <table>
+                <tr><th>If You Click</th><th>What Happens</th></tr>
+                <tr><td style="color:#2ecc71;"><strong>Allow</strong></td><td>The website gets your GPS coordinates: latitude, longitude, altitude, accuracy (in metres), speed, and heading. It can calculate your physical address, track your movements, or store this data.</td></tr>
+                <tr><td style="color:#e74c3c;"><strong>Block</strong></td><td>The API returns an error code. The website gets NOTHING. No coordinates, no approximation, no fallback. Complete denial.</td></tr>
+            </table>
+        </div>
+
+        <div class="explanation" style="margin-top:15px; border-left-color:#2ecc71;">
+            <h4 style="color:#2ecc71;">What Data Gets Exposed</h4>
+            <table>
+                <tr><th>Field</th><th>What It Is</th><th>Risk Level</th></tr>
+                <tr><td><code>latitude</code></td><td>North/south position. Combined with longitude = your exact location.</td><td style="color:#e74c3c;">HIGH</td></tr>
+                <tr><td><code>longitude</code></td><td>East/west position.</td><td style="color:#e74c3c;">HIGH</td></tr>
+                <tr><td><code>accuracy</code></td><td>How precise the reading is (metres). GPS: 5-10m. WiFi: 20-50m. Cell tower: 100-1000m.</td><td style="color:#cc8844;">MEDIUM</td></tr>
+                <tr><td><code>altitude</code></td><td>Height above sea level. Not always available.</td><td style="color:#888;">LOW</td></tr>
+                <tr><td><code>speed</code></td><td>Movement speed in m/s. Reveals if you're walking, driving, or stationary.</td><td style="color:#cc8844;">MEDIUM</td></tr>
+                <tr><td><code>heading</code></td><td>Direction of travel in degrees (0=north, 90=east).</td><td style="color:#888;">LOW</td></tr>
+            </table>
+        </div>
+
+        <div class="explanation" style="margin-top:15px; border-left-color:#2ecc71;">
+            <h4 style="color:#2ecc71;">OSINT Context</h4>
+            <p>In real-world OSINT, location data is one of the highest-value intelligence pieces. A single GPS coordinate can reveal:</p>
+            <p>&bull; <strong>Home address</strong> — if collected at night, the user is likely at home.</p>
+            <p>&bull; <strong>Workplace</strong> — if collected during business hours.</p>
+            <p>&bull; <strong>Daily patterns</strong> — repeated collection shows commute routes, habits, frequented locations.</p>
+            <p>&bull; <strong>Physical security posture</strong> — can the target be located in real-time?</p>
+            <p>This is why the browser asks before sharing. The permission popup is your only defence. <strong>Deny by default.</strong></p>
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════ ABOUT ═══════════════════════════════════════ -->
+<div id="tab-about" class="page-section">
+    <div class="section">
+        <h2>About</h2>
+        <div class="about-grid">
+            <div class="about-text">
+                <p><span class="highlight">22nd Survey Division</span> is a veteran-owned survey drafting operation based in Sydney. We take field data from land surveyors and turn it into clean, accurate, lodgement-ready plans.</p>
+                <p>No half-arsed work. No three-week turnarounds. No plans that come back from the Registrar General with corrections.</p>
+                <p>We draft for registered surveyors across NSW. Detail surveys, subdivisions, strata plans, contour mapping. If it came from a total station or GNSS receiver, we can draft it.</p>
+                <div class="stat-row">
+                    <div class="stat"><div class="num">NSW</div><div class="label">Based</div></div>
+                    <div class="stat"><div class="num">CAD</div><div class="label">Precision</div></div>
+                    <div class="stat"><div class="num">VET</div><div class="label">Owned</div></div>
+                </div>
+            </div>
+            <img src="about.jpg" alt="22nd Survey Division" class="about-img">
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════ GALLERY ═══════════════════════════════════════ -->
+<div id="tab-gallery" class="page-section">
+    <div class="section">
+        <h2>Gallery</h2>
+        <div class="gallery-grid">
+            <img src="header.jpg" alt="Survey work">
+            <img src="floor.jpg" alt="Field work">
+            <img src="signal.jpg" alt="Survey equipment">
+            <img src="momentum.jpg" alt="Project work">
+            <img src="catch.jpg" alt="Drafting">
+            <img src="audit.jpg" alt="Quality check">
+            <img src="mirror.jpg" alt="Site work">
+            <img src="gap.jpg" alt="Measurement">
+        </div>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════ CONTACT ═══════════════════════════════════════ -->
+<div id="tab-contact" class="page-section">
+    <div class="section">
+        <h2>Contact</h2>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="contact-label">Email</div>
+                <div class="contact-value"><a href="mailto:admin@22div.com.au">admin@22div.com.au</a></div>
+                <div class="contact-label">Mailing Address</div>
+                <div class="contact-value">80-81 Campbell St<br>Surry Hills, NSW 2010</div>
+                <div class="contact-label">Services</div>
+                <div class="contact-value">Survey Drafting &bull; OSINT &bull; Software/IT Engineering</div>
+                <div class="contact-label">Request a Surveyor</div>
+                <div class="contact-value"><a href="request-a-surveyor.html">Submit a request</a></div>
+            </div>
+            <div class="contact-info">
+                <div class="contact-label">Hours</div>
+                <div class="contact-value">Monday &ndash; Friday: 0800 &ndash; 1700 AEST</div>
+                <div class="contact-label">Turnaround</div>
+                <div class="contact-value">Standard jobs: same week. Complex subdivisions: quoted on scope.</div>
+            </div>
+        </div>
+        <h2 style="margin-top:40px;">Send an Enquiry</h2>
+        <form id="contact-form" style="max-width:500px;">
+            <div class="form-group">
+                <label for="cf-cat">Category</label>
+                <select id="cf-cat" name="category" required>
+                    <option value="">Select...</option>
+                    <option value="Survey Drafting">Survey Drafting</option>
+                    <option value="OSINT">OSINT</option>
+                    <option value="Software / IT">Software / IT Engineering</option>
+                    <option value="General">General Enquiry</option>
+                </select>
+            </div>
+            <div class="form-group"><label for="cf-name">Name</label><input type="text" id="cf-name" name="name" required placeholder="Your name"></div>
+            <div class="form-group"><label for="cf-email">Email</label><input type="email" id="cf-email" name="email" required placeholder="you@example.com"></div>
+            <div class="form-group"><label for="cf-phone">Phone (optional)</label><input type="text" id="cf-phone" name="phone" placeholder="0412 345 678"></div>
+            <div class="form-group"><label for="cf-msg">Message</label><textarea id="cf-msg" name="message" required placeholder="Describe your project or enquiry"></textarea></div>
+            <button type="submit" class="form-btn">Submit</button>
+            <div id="form-status" class="form-msg"></div>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <span>22nd Survey Division &copy; 2026. All rights reserved.</span><br>
+    <div class="motto">Vidimus Omnia</div>
+</footer>
+
+<!-- sql.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.11.0/sql-wasm.js"></script>
+<script>
+/* ═══════════ NAVIGATION ═══════════ */
+function showTab(name, btn) {
+    document.querySelectorAll('.page-section').forEach(function(s) { s.classList.remove('active'); });
+    document.querySelectorAll('.tabs .tab').forEach(function(t) { t.classList.remove('active'); });
+    document.getElementById('tab-' + name).classList.add('active');
+    if (btn) btn.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showSubTab(group, name, btn) {
+    var parent = btn.closest('.section') || btn.closest('.sub-panel')?.parentElement || document.getElementById('tab-' + group) || document.body;
+    var tabBar = btn.parentElement;
+    // Find all sub-panels that are siblings after this tab bar
+    var panels = [];
+    var el = tabBar.nextElementSibling;
+    while (el) {
+        if (el.classList.contains('sub-panel')) panels.push(el);
+        if (el.classList.contains('sub-tabs')) break;
+        el = el.nextElementSibling;
+    }
+    // Also try by ID
+    var target = document.getElementById(group + '-' + name);
+    if (target) {
+        panels.forEach(function(p) { p.classList.remove('active'); });
+        target.classList.add('active');
+    }
+    tabBar.querySelectorAll('.sub-tab').forEach(function(t) { t.classList.remove('active'); });
+    btn.classList.add('active');
+}
+
+/* ═══════════ SQL.JS DATABASE ═══════════ */
+var db = null;
+
+async function initDB() {
+    var SQL = await initSqlJs({
+        locateFile: function(file) { return 'https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.11.0/' + file; }
+    });
+    db = new SQL.Database();
+
+    db.run("CREATE TABLE users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, password TEXT NOT NULL, role TEXT NOT NULL)");
+    db.run("CREATE TABLE patient (patient_id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL, last_name TEXT NOT NULL, date_of_birth TEXT, gender TEXT, mobile_phone TEXT)");
+    db.run("CREATE TABLE practitioner (practitioner_id INTEGER PRIMARY KEY AUTOINCREMENT, first_name TEXT NOT NULL, last_name TEXT NOT NULL, practitioner_type TEXT NOT NULL)");
+    db.run("CREATE TABLE appointment (appointment_id INTEGER PRIMARY KEY AUTOINCREMENT, patient_id INTEGER, practitioner_id INTEGER, appointment_date TEXT, appointment_time TEXT, notes TEXT)");
+    db.run("CREATE TABLE secrets (id INTEGER PRIMARY KEY AUTOINCREMENT, flag TEXT NOT NULL, description TEXT)");
+
+    db.run("INSERT INTO users (username, password, role) VALUES ('admin', 'admin123', 'administrator')");
+    db.run("INSERT INTO users (username, password, role) VALUES ('drsmith', 'password1', 'practitioner')");
+    db.run("INSERT INTO users (username, password, role) VALUES ('nurse_jones', 'nursepw', 'practitioner')");
+    db.run("INSERT INTO users (username, password, role) VALUES ('reception', 'front_desk', 'staff')");
+
+    db.run("INSERT INTO patient (first_name, last_name, date_of_birth, gender, mobile_phone) VALUES ('John', 'Smith', '1985-03-15', 'Male', '0412345678')");
+    db.run("INSERT INTO patient (first_name, last_name, date_of_birth, gender, mobile_phone) VALUES ('Sarah', 'Connor', '1990-07-22', 'Female', '0423456789')");
+    db.run("INSERT INTO patient (first_name, last_name, date_of_birth, gender, mobile_phone) VALUES ('James', 'Wilson', '1978-11-30', 'Male', '0434567890')");
+    db.run("INSERT INTO patient (first_name, last_name, date_of_birth, gender, mobile_phone) VALUES ('Emily', 'Chen', '2001-01-14', 'Female', '0445678901')");
+    db.run("INSERT INTO patient (first_name, last_name, date_of_birth, gender, mobile_phone) VALUES ('Robert', 'Brown', '1965-09-08', 'Male', '0456789012')");
+
+    db.run("INSERT INTO practitioner (first_name, last_name, practitioner_type) VALUES ('David', 'Smith', 'GP')");
+    db.run("INSERT INTO practitioner (first_name, last_name, practitioner_type) VALUES ('Maria', 'Garcia', 'Nurse')");
+    db.run("INSERT INTO practitioner (first_name, last_name, practitioner_type) VALUES ('Alan', 'Turing', 'Physiotherapist')");
+
+    db.run("INSERT INTO appointment (patient_id, practitioner_id, appointment_date, appointment_time, notes) VALUES (1, 1, '2026-02-15', '09:00', 'General checkup')");
+    db.run("INSERT INTO appointment (patient_id, practitioner_id, appointment_date, appointment_time, notes) VALUES (2, 1, '2026-02-15', '10:30', 'Follow-up blood work')");
+    db.run("INSERT INTO appointment (patient_id, practitioner_id, appointment_date, appointment_time, notes) VALUES (3, 2, '2026-02-16', '14:00', 'Wound dressing change')");
+    db.run("INSERT INTO appointment (patient_id, practitioner_id, appointment_date, appointment_time, notes) VALUES (4, 3, '2026-02-17', '11:00', 'Knee rehabilitation session')");
+    db.run("INSERT INTO appointment (patient_id, practitioner_id, appointment_date, appointment_time, notes) VALUES (1, 1, '2026-03-01', '09:00', 'Results review - CONFIDENTIAL')");
+
+    db.run("INSERT INTO secrets (flag, description) VALUES ('FLAG{sql_injection_is_not_a_feature}', 'Flag 1: Found via UNION extraction')");
+    db.run("INSERT INTO secrets (flag, description) VALUES ('FLAG{blind_as_a_bat_but_still_sees}', 'Flag 2: Found via blind boolean inference')");
+
+    document.getElementById('sql-status').innerHTML = 'SQLite database <span style="color:#44ff44;">LOADED</span> — 5 tables, 19 rows. All queries execute in your browser.';
+}
+
+function runQ(sql) {
+    var r = db.exec(sql);
+    if (r.length === 0) return [];
+    return r[0].values.map(function(row) {
+        var o = {};
+        r[0].columns.forEach(function(c, i) { o[c] = row[i]; });
+        return o;
+    });
+}
+
+function makeTable(rows) {
+    if (!rows.length) return '';
+    var cols = Object.keys(rows[0]);
+    var h = '<table class="lab-results"><tr>';
+    cols.forEach(function(c) { h += '<th>' + c + '</th>'; });
+    h += '</tr>';
+    rows.forEach(function(row) {
+        h += '<tr>';
+        cols.forEach(function(c) { h += '<td>' + (row[c] !== null ? row[c] : 'NULL') + '</td>'; });
+        h += '</tr>';
+    });
+    return h + '</table>';
+}
+
+function showQ(id, sql) {
+    document.getElementById(id).innerHTML = '<div class="query-box"><span class="query-label">EXECUTED QUERY:</span>\n' + sql + '</div>';
+}
+
+/* Level 1 */
+function sqlLogin() {
+    var u = document.getElementById('l1-user').value;
+    var p = document.getElementById('l1-pass').value;
+    var sql = "SELECT * FROM users WHERE username = '" + u + "' AND password = '" + p + "'";
+    showQ('l1-query', sql);
+    try {
+        var rows = runQ(sql);
+        if (rows.length > 0) {
+            document.getElementById('l1-result').innerHTML = '<div class="result-ok">ACCESS GRANTED</div>' + makeTable(rows);
+        } else {
+            document.getElementById('l1-result').innerHTML = '<div class="result-err">ACCESS DENIED: Invalid credentials</div>';
+        }
+    } catch (e) { document.getElementById('l1-result').innerHTML = '<div class="result-err">SQL ERROR: ' + e.message + '</div>'; }
+}
+
+/* Level 2 */
+function sqlSearch() {
+    var n = document.getElementById('l2-name').value;
+    var sql = "SELECT * FROM patient WHERE first_name LIKE '%" + n + "%' OR last_name LIKE '%" + n + "%'";
+    showQ('l2-query', sql);
+    try {
+        var r = db.exec(sql);
+        if (r.length > 0 && r[0].values.length > 0) {
+            var rows = r[0].values.map(function(row) { var o = {}; r[0].columns.forEach(function(c, i) { o[c] = row[i]; }); return o; });
+            document.getElementById('l2-result').innerHTML = makeTable(rows);
+        } else {
+            document.getElementById('l2-result').innerHTML = '<div class="result-err">No patients found.</div>';
+        }
+    } catch (e) { document.getElementById('l2-result').innerHTML = '<div class="result-err">SQL ERROR: ' + e.message + '</div>'; }
+}
+
+/* Level 3 */
+function sqlUnion() {
+    var id = document.getElementById('l3-id').value;
+    var sql = "SELECT appointment_id, appointment_date, appointment_time, notes FROM appointment WHERE patient_id = " + id;
+    showQ('l3-query', sql);
+    try {
+        var r = db.exec(sql);
+        if (r.length > 0 && r[0].values.length > 0) {
+            var rows = r[0].values.map(function(row) { var o = {}; r[0].columns.forEach(function(c, i) { o[c] = row[i]; }); return o; });
+            document.getElementById('l3-result').innerHTML = makeTable(rows);
+        } else {
+            document.getElementById('l3-result').innerHTML = '<div class="result-err">No appointments found for this patient.</div>';
+        }
+    } catch (e) { document.getElementById('l3-result').innerHTML = '<div class="result-err">SQL ERROR: ' + e.message + '</div>'; }
+}
+
+/* Level 4 */
+function sqlBlind() {
+    var id = document.getElementById('l4-id').value;
+    var sql = "SELECT first_name FROM patient WHERE patient_id = " + id;
+    showQ('l4-query', sql);
+    try {
+        var r = db.exec(sql);
+        if (r.length > 0 && r[0].values.length > 0) {
+            document.getElementById('l4-result').innerHTML = '<div class="result-ok">Patient exists.</div>';
+        } else {
+            document.getElementById('l4-result').innerHTML = '<div class="result-err">Patient not found.</div>';
+        }
+    } catch (e) { document.getElementById('l4-result').innerHTML = '<div class="result-err">SQL ERROR: ' + e.message + '</div>'; }
+}
+
+/* Enter key for SQL forms */
+document.addEventListener('keydown', function(e) {
+    if (e.key !== 'Enter') return;
+    var t = e.target;
+    if (t.id === 'l1-user' || t.id === 'l1-pass') sqlLogin();
+    else if (t.id === 'l2-name') sqlSearch();
+    else if (t.id === 'l3-id') sqlUnion();
+    else if (t.id === 'l4-id') sqlBlind();
+});
+
+/* ═══════════ OSINT GPS TOOL ═══════════ */
+function requestLocation() {
+    var btn = document.getElementById('gps-btn');
+    var output = document.getElementById('gps-output');
+    var dl = document.getElementById('gps-download');
+
+    btn.disabled = true;
+    btn.textContent = 'REQUESTING...';
+    output.className = 'gps-output show';
+
+    if (!navigator.geolocation) {
+        output.innerHTML = '<span class="blocked">ERROR: Geolocation API not supported in this browser.</span>';
+        btn.disabled = false;
+        btn.textContent = 'REQUEST LOCATION';
+        return;
+    }
+
+    output.innerHTML = 'Requesting browser permission...\nYour browser should show a popup now.\n';
+
+    navigator.geolocation.getCurrentPosition(
+        function(pos) {
+            /* USER CLICKED ALLOW */
+            var c = pos.coords;
+            var ts = new Date(pos.timestamp).toISOString();
+
+            var report = '';
+            report += '╔══════════════════════════════════════════╗\n';
+            report += '║  GPS COORDINATE REPORT                   ║\n';
+            report += '║  Permission: ALLOWED                     ║\n';
+            report += '╚══════════════════════════════════════════╝\n\n';
+            report += 'Timestamp:  ' + ts + '\n';
+            report += 'Source:     navigator.geolocation API\n';
+            report += 'Website:    ' + window.location.hostname + '\n\n';
+            report += '── COORDINATES ──────────────────────────────\n';
+            report += 'Latitude:   ' + c.latitude + '\n';
+            report += 'Longitude:  ' + c.longitude + '\n';
+            report += 'Accuracy:   ' + c.accuracy + ' metres\n';
+            report += 'Altitude:   ' + (c.altitude !== null ? c.altitude + ' m' : 'Not available') + '\n';
+            report += 'Alt Accuracy: ' + (c.altitudeAccuracy !== null ? c.altitudeAccuracy + ' m' : 'Not available') + '\n';
+            report += 'Speed:      ' + (c.speed !== null ? c.speed + ' m/s' : 'Not available') + '\n';
+            report += 'Heading:    ' + (c.heading !== null ? c.heading + '°' : 'Not available') + '\n\n';
+            report += '── WHAT THIS MEANS ─────────────────────────\n';
+            report += 'You clicked ALLOW. The website now has your\n';
+            report += 'physical location to within ' + Math.round(c.accuracy) + ' metres.\n\n';
+            report += 'Google Maps: https://maps.google.com/?q=' + c.latitude + ',' + c.longitude + '\n\n';
+            report += '── PERMISSIONS GRANTED ──────────────────────\n';
+            report += '[GRANTED] Latitude & Longitude (exact position)\n';
+            report += '[GRANTED] Accuracy radius\n';
+            report += '[GRANTED] Altitude (if available)\n';
+            report += '[GRANTED] Speed & heading (if moving)\n';
+            report += '[GRANTED] Timestamp of reading\n\n';
+            report += '── RISK ASSESSMENT ─────────────────────────\n';
+            report += 'Any website with this permission can:\n';
+            report += '  • Pinpoint your physical location\n';
+            report += '  • Track you in real-time (with watchPosition)\n';
+            report += '  • Store your location history server-side\n';
+            report += '  • Correlate with other data for profiling\n\n';
+            report += 'This report was generated client-side.\n';
+            report += 'No data was sent to any server.\n';
+
+            output.innerHTML = '<span class="allowed">PERMISSION: ALLOWED</span>\n\n' + report;
+
+            /* Create downloadable .txt file */
+            var blob = new Blob([report], { type: 'text/plain' });
+            var url = URL.createObjectURL(blob);
+            document.getElementById('gps-dl-link').href = url;
+            dl.className = 'gps-download show';
+
+            btn.disabled = false;
+            btn.textContent = 'REQUEST LOCATION';
+        },
+        function(err) {
+            /* USER CLICKED BLOCK (or error) */
+            var reasons = {
+                1: 'PERMISSION_DENIED — You clicked Block.',
+                2: 'POSITION_UNAVAILABLE — Device cannot determine location.',
+                3: 'TIMEOUT — Location request timed out.'
+            };
+
+            var report = '';
+            report += '╔══════════════════════════════════════════╗\n';
+            report += '║  GPS COORDINATE REPORT                   ║\n';
+            report += '║  Permission: BLOCKED                     ║\n';
+            report += '╚══════════════════════════════════════════╝\n\n';
+            report += 'Timestamp:  ' + new Date().toISOString() + '\n';
+            report += 'Source:     navigator.geolocation API\n';
+            report += 'Website:    ' + window.location.hostname + '\n\n';
+            report += '── RESULT ──────────────────────────────────\n';
+            report += 'Error Code: ' + err.code + '\n';
+            report += 'Reason:     ' + (reasons[err.code] || err.message) + '\n\n';
+            report += '── DATA COLLECTED ──────────────────────────\n';
+            report += 'Latitude:   DENIED\n';
+            report += 'Longitude:  DENIED\n';
+            report += 'Accuracy:   DENIED\n';
+            report += 'Altitude:   DENIED\n';
+            report += 'Speed:      DENIED\n';
+            report += 'Heading:    DENIED\n\n';
+            report += '── WHAT THIS MEANS ─────────────────────────\n';
+            report += 'You clicked BLOCK (or the request failed).\n';
+            report += 'The website received ZERO location data.\n';
+            report += 'No coordinates. No approximation. Nothing.\n\n';
+            report += '── PERMISSIONS DENIED ───────────────────────\n';
+            report += '[DENIED] Latitude & Longitude\n';
+            report += '[DENIED] Accuracy radius\n';
+            report += '[DENIED] Altitude\n';
+            report += '[DENIED] Speed & heading\n';
+            report += '[DENIED] Timestamp of reading\n\n';
+            report += '── WHY THIS MATTERS ────────────────────────\n';
+            report += 'Blocking location is the correct default.\n';
+            report += 'Only allow location for apps you trust\n';
+            report += 'that genuinely need it (maps, ride-sharing).\n';
+            report += 'Most websites have no legitimate reason\n';
+            report += 'to know where you physically are.\n';
+
+            output.innerHTML = '<span class="blocked">PERMISSION: BLOCKED</span>\n\n' + report;
+
+            var blob = new Blob([report], { type: 'text/plain' });
+            var url = URL.createObjectURL(blob);
+            document.getElementById('gps-dl-link').href = url;
+            dl.className = 'gps-download show';
+
+            btn.disabled = false;
+            btn.textContent = 'REQUEST LOCATION';
+        },
+        { enableHighAccuracy: true, timeout: 10000 }
+    );
+}
+
+/* ═══════════ CONTACT FORM ═══════════ */
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var status = document.getElementById('form-status');
+    var btn = this.querySelector('.form-btn');
+    btn.disabled = true;
+    btn.textContent = 'SENDING...';
+    status.textContent = '';
+
+    var data = new FormData(this);
+    fetch('contact.php', { method: 'POST', body: data })
+        .then(function(r) { return r.json(); })
+        .then(function(d) {
+            if (d.ok) {
+                status.className = 'form-msg ok';
+                status.textContent = 'Message sent. We will be in touch.';
+                document.getElementById('contact-form').reset();
+            } else {
+                status.className = 'form-msg err';
+                status.textContent = d.error || 'Something went wrong.';
+            }
+            btn.disabled = false; btn.textContent = 'SUBMIT';
+        })
+        .catch(function() {
+            status.className = 'form-msg err';
+            status.textContent = 'Network error. Try again.';
+            btn.disabled = false; btn.textContent = 'SUBMIT';
+        });
+});
+
+/* ═══════════ INIT ═══════════ */
+initDB().catch(function(e) {
+    document.getElementById('sql-status').innerHTML = '<span style="color:#ff4444;">DATABASE INIT FAILED: ' + e.message + '</span>';
+});
+</script>
+</body>
+</html>

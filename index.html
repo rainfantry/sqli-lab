@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medical Practice SQLi Lab</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+        background: #0a0a0a; color: #c0c0c0; font-family: 'Courier New', monospace;
+        font-size: 14px; line-height: 1.6; padding: 20px;
+    }
+    .container { max-width: 900px; margin: 0 auto; }
+    h1 { color: #ff4444; margin-bottom: 5px; font-size: 20px; }
+    h2 { color: #ff6666; margin: 20px 0 10px; font-size: 16px; }
+    .subtitle { color: #666; font-size: 12px; margin-bottom: 20px; }
+    a { color: #ff4444; text-decoration: none; cursor: pointer; }
+    a:hover { color: #ff6666; text-decoration: underline; }
+    nav { margin: 20px 0; padding: 10px 0; border-top: 1px solid #333; border-bottom: 1px solid #333; }
+    nav a { margin-right: 20px; }
+    .level-box {
+        background: #111; border: 1px solid #333; padding: 20px; margin: 15px 0;
+        border-left: 3px solid #ff4444;
+    }
+    input[type="text"], input[type="password"] {
+        background: #1a1a1a; border: 1px solid #444; color: #c0c0c0;
+        padding: 8px 12px; font-family: 'Courier New', monospace; font-size: 14px;
+        width: 300px;
+    }
+    input:focus { border-color: #ff4444; outline: none; }
+    button {
+        background: #ff4444; color: #0a0a0a; border: none; padding: 8px 20px;
+        font-family: 'Courier New', monospace; font-size: 14px; cursor: pointer;
+        font-weight: bold;
+    }
+    button:hover { background: #ff6666; }
+    .query-box {
+        background: #1a1a1a; border: 1px solid #333; padding: 12px; margin: 10px 0;
+        font-size: 13px; color: #888; word-wrap: break-word; white-space: pre-wrap;
+    }
+    .query-label { color: #ff4444; font-weight: bold; }
+    .result { color: #44ff44; margin: 5px 0; }
+    .error { color: #ff4444; margin: 5px 0; }
+    .hint { color: #666; font-size: 12px; margin-top: 10px; font-style: italic; }
+    table { border-collapse: collapse; margin: 10px 0; width: 100%; }
+    th { background: #1a1a1a; color: #ff4444; text-align: left; padding: 8px; border: 1px solid #333; }
+    td { padding: 8px; border: 1px solid #333; }
+    .tag { display: inline-block; background: #1a1a1a; border: 1px solid #ff4444;
+           color: #ff4444; padding: 2px 8px; font-size: 11px; margin-right: 5px; }
+    .page { display: none; }
+    .page.active { display: block; }
+    code { background: #1a1a1a; padding: 2px 6px; color: #ff8888; }
+    .status-bar {
+        background: #111; border: 1px solid #333; padding: 8px 12px; margin: 10px 0;
+        font-size: 12px; color: #666;
+    }
+    .status-bar .ok { color: #44ff44; }
+    .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #222; color: #444; font-size: 11px; }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>MEDICAL PRACTICE PORTAL</h1>
+    <div class="subtitle">[ Definitely Secure Healthcare System v1.0 — Client-Side SQLite via sql.js ]</div>
+
+    <div class="status-bar" id="status">Loading SQLite database...</div>
+
+    <nav>
+        <a onclick="showPage('index')">INDEX</a>
+        <a onclick="showPage('login')">LEVEL 1: LOGIN</a>
+        <a onclick="showPage('search')">LEVEL 2: SEARCH</a>
+        <a onclick="showPage('union')">LEVEL 3: UNION</a>
+        <a onclick="showPage('blind')">LEVEL 4: BLIND</a>
+        <a onclick="showPage('theory')">THEORY</a>
+    </nav>
+
+    <!-- INDEX PAGE -->
+    <div id="page-index" class="page active">
+        <h2>SQL INJECTION TRAINING LAB</h2>
+        <div class="level-box">
+            <p>This application is <strong>deliberately vulnerable</strong>.</p>
+            <p>Every input field concatenates user input directly into SQL queries.</p>
+            <p>A real SQLite database runs in your browser via WebAssembly.</p>
+            <p>Your mission: exploit each level and find the <strong>2 hidden flags</strong>.</p>
+        </div>
+        <h2>LEVELS</h2>
+        <div class="level-box">
+            <span class="tag">LEVEL 1</span> <a onclick="showPage('login')">Login Bypass</a>
+            <span class="hint"> — Authentication bypass via tautology injection</span>
+        </div>
+        <div class="level-box">
+            <span class="tag">LEVEL 2</span> <a onclick="showPage('search')">Data Extraction</a>
+            <span class="hint"> — Break out of LIKE clause with UNION SELECT</span>
+        </div>
+        <div class="level-box">
+            <span class="tag">LEVEL 3</span> <a onclick="showPage('union')">UNION Attack</a>
+            <span class="hint"> — Column enumeration and full table extraction</span>
+        </div>
+        <div class="level-box">
+            <span class="tag">LEVEL 4</span> <a onclick="showPage('blind')">Blind SQLi</a>
+            <span class="hint"> — Boolean-based inference, one character at a time</span>
+        </div>
+        <div class="level-box">
+            <span class="tag">REFERENCE</span> <a onclick="showPage('theory')">Theory &amp; Defence</a>
+            <span class="hint"> — How it works, why it works, how to stop it</span>
+        </div>
+    </div>
+
+    <!-- LEVEL 1: LOGIN BYPASS -->
+    <div id="page-login" class="page">
+        <h2>LEVEL 1: LOGIN BYPASS</h2>
+        <div class="level-box">
+            <p>Bypass the login form without knowing valid credentials.</p>
+            <p><strong>Vulnerability:</strong> String concatenation in WHERE clause.</p>
+            <p><label>Username:</label><br><input type="text" id="login-user" autocomplete="off"></p>
+            <p><label>Password:</label><br><input type="text" id="login-pass" autocomplete="off"></p>
+            <p><button onclick="doLogin()">LOGIN</button></p>
+            <div id="login-query"></div>
+            <div id="login-result"></div>
+            <div class="hint">Hint: What happens if you close the quote early and add your own logic?</div>
+        </div>
+    </div>
+
+    <!-- LEVEL 2: DATA EXTRACTION -->
+    <div id="page-search" class="page">
+        <h2>LEVEL 2: DATA EXTRACTION</h2>
+        <div class="level-box">
+            <p>Search for patients by name. Then extract data from other tables.</p>
+            <p><strong>Vulnerability:</strong> Direct interpolation in LIKE clause.</p>
+            <p><label>Patient Name:</label><br><input type="text" id="search-name" autocomplete="off"></p>
+            <p><button onclick="doSearch()">SEARCH</button></p>
+            <div id="search-query"></div>
+            <div id="search-result"></div>
+            <div class="hint">Hint: Can you close the LIKE clause and UNION SELECT from another table?</div>
+        </div>
+    </div>
+
+    <!-- LEVEL 3: UNION ATTACK -->
+    <div id="page-union" class="page">
+        <h2>LEVEL 3: UNION ATTACK</h2>
+        <div class="level-box">
+            <p>Look up appointments by patient ID. Then enumerate the entire database.</p>
+            <p><strong>Vulnerability:</strong> No type checking on integer input.</p>
+            <p><label>Patient ID:</label><br><input type="text" id="union-id" autocomplete="off"></p>
+            <p><button onclick="doUnion()">LOOKUP</button></p>
+            <div id="union-query"></div>
+            <div id="union-result"></div>
+            <div class="hint">Hint: Use ORDER BY to find column count, then UNION SELECT from sqlite_master.</div>
+        </div>
+    </div>
+
+    <!-- LEVEL 4: BLIND SQLi -->
+    <div id="page-blind" class="page">
+        <h2>LEVEL 4: BLIND SQLi</h2>
+        <div class="level-box">
+            <p>Check if a patient exists by ID. No data is returned — only yes or no.</p>
+            <p><strong>Vulnerability:</strong> Boolean-based blind injection.</p>
+            <p><label>Patient ID:</label><br><input type="text" id="blind-id" autocomplete="off"></p>
+            <p><button onclick="doBlind()">CHECK</button></p>
+            <div id="blind-query"></div>
+            <div id="blind-result"></div>
+            <div class="hint">Hint: 1 AND (SELECT substr(flag,1,1) FROM secrets WHERE id=1)='F' — what does the response tell you?</div>
+        </div>
+    </div>
+
+    <!-- THEORY PAGE -->
+    <div id="page-theory" class="page">
+        <h2>SQL INJECTION THEORY</h2>
+
+        <div class="level-box">
+            <h2>What is SQL Injection?</h2>
+            <p>SQL injection occurs when user input is concatenated directly into a SQL query
+            string instead of being passed as a parameter. The database cannot distinguish
+            between the developer's intended SQL and the attacker's injected SQL.</p>
+        </div>
+
+        <div class="level-box">
+            <h2>Types of SQLi</h2>
+            <table>
+                <tr><th>Type</th><th>Description</th><th>Level</th></tr>
+                <tr><td>Tautology / Auth Bypass</td><td>Inject OR 1=1 to make WHERE always true</td><td>1</td></tr>
+                <tr><td>UNION-based</td><td>Append UNION SELECT to extract from other tables</td><td>2, 3</td></tr>
+                <tr><td>Error-based</td><td>Force SQL errors that leak schema info</td><td>Any</td></tr>
+                <tr><td>Blind (Boolean)</td><td>Infer data from yes/no responses</td><td>4</td></tr>
+                <tr><td>Blind (Time)</td><td>Infer data from response delay (not in this lab)</td><td>-</td></tr>
+            </table>
+        </div>
+
+        <div class="level-box">
+            <h2>UNION SELECT Technique</h2>
+            <p><strong>Step 1:</strong> Find column count with ORDER BY</p>
+            <div class="query-box">1 ORDER BY 1 --    (works)
+1 ORDER BY 2 --    (works)
+1 ORDER BY 3 --    (works)
+1 ORDER BY 4 --    (works)
+1 ORDER BY 5 --    (error = only 4 columns)</div>
+            <p><strong>Step 2:</strong> Enumerate tables from sqlite_master</p>
+            <div class="query-box">0 UNION SELECT 1, name, 3, 4 FROM sqlite_master WHERE type='table' --</div>
+            <p><strong>Step 3:</strong> Enumerate columns</p>
+            <div class="query-box">0 UNION SELECT 1, sql, 3, 4 FROM sqlite_master WHERE name='secrets' --</div>
+            <p><strong>Step 4:</strong> Extract data</p>
+            <div class="query-box">0 UNION SELECT 1, flag, description, 4 FROM secrets --</div>
+        </div>
+
+        <div class="level-box">
+            <h2>Blind SQLi Technique</h2>
+            <p>When no data is returned, extract one character at a time:</p>
+            <div class="query-box">1 AND (SELECT substr(flag,1,1) FROM secrets WHERE id=1)='F'
+-- If "Patient exists" -> first char is F
+-- If "Patient not found" -> first char is NOT F
+-- Repeat for each position: substr(flag,2,1), substr(flag,3,1), ...</div>
+        </div>
+
+        <div class="level-box">
+            <h2>The Fix: Parameterised Queries</h2>
+            <p>Every vulnerability in this lab is solved by parameterised queries:</p>
+            <div class="query-box"><span style="color:#ff4444;">VULNERABLE (Python):</span>
+cursor.execute(f"SELECT * FROM users WHERE name = '{name}'")<br>
+<span style="color:#44ff44;">SECURE (Python):</span>
+cursor.execute("SELECT * FROM users WHERE name = ?", (name,))<br><br>
+<span style="color:#ff4444;">VULNERABLE (JavaScript):</span>
+db.exec("SELECT * FROM users WHERE name = '" + name + "'")<br>
+<span style="color:#44ff44;">SECURE (JavaScript):</span>
+db.exec("SELECT * FROM users WHERE name = ?", [name])</div>
+            <p>The <code>?</code> placeholder tells the database to treat input as <strong>data</strong>, never as <strong>code</strong>.</p>
+        </div>
+
+        <div class="level-box">
+            <h2>MSSQL vs SQLite Differences</h2>
+            <p>This lab uses SQLite (in-browser). Your TAFE environment uses MSSQL. Key differences:</p>
+            <table>
+                <tr><th>Feature</th><th>SQLite (this lab)</th><th>MSSQL (TAFE)</th></tr>
+                <tr><td>System tables</td><td><code>sqlite_master</code></td><td><code>sys.tables</code></td></tr>
+                <tr><td>Top N rows</td><td><code>LIMIT 5</code></td><td><code>TOP 5</code></td></tr>
+                <tr><td>String concat</td><td><code>||</code></td><td><code>+</code></td></tr>
+                <tr><td>Comments</td><td><code>--</code></td><td><code>--</code> (same)</td></tr>
+                <tr><td>Auto-increment</td><td><code>AUTOINCREMENT</code></td><td><code>IDENTITY(1,1)</code></td></tr>
+            </table>
+            <p>The injection techniques are identical — only the recon commands change.</p>
+        </div>
+    </div>
+
+    <div class="footer">
+        ICTDBS416 + ICTPRG431 | 22nd Survey Division | Cert IV Programming | Vidimus Omnia<br>
+        SQLite powered by <a href="https://sql.js.org" target="_blank">sql.js</a> (WebAssembly) — real database, real injection, no backend required.
+    </div>
+</div>
+
+<!-- sql.js from CDN — SQLite compiled to WebAssembly -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.11.0/sql-wasm.js"></script>
+<script>
+let db = null;
+
+// Initialise database
+async function initDB() {
+    const SQL = await initSqlJs({
+        locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.11.0/${file}`
+    });
+
+    db = new SQL.Database();
+
+    // Create tables
+    db.run(`CREATE TABLE users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT NOT NULL,
+        password TEXT NOT NULL,
+        role TEXT NOT NULL
+    )`);
+    db.run(`CREATE TABLE patient (
+        patient_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        date_of_birth TEXT,
+        gender TEXT,
+        mobile_phone TEXT
+    )`);
+    db.run(`CREATE TABLE practitioner (
+        practitioner_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        first_name TEXT NOT NULL,
+        last_name TEXT NOT NULL,
+        practitioner_type TEXT NOT NULL
+    )`);
+    db.run(`CREATE TABLE appointment (
+        appointment_id INTEGER PRIMARY KEY AUTOINCREMENT,
+        patient_id INTEGER,
+        practitioner_id INTEGER,
+        appointment_date TEXT,
+        appointment_time TEXT,
+        notes TEXT
+    )`);
+    db.run(`CREATE TABLE secrets (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        flag TEXT NOT NULL,
+        description TEXT
+    )`);
+
+    // Seed data
+    db.run("INSERT INTO users (username, password, role) VALUES ('admin', 'admin123', 'administrator')");
+    db.run("INSERT INTO users (username, password, role) VALUES ('drsmith', 'password1', 'practitioner')");
+    db.run("INSERT INTO users (username, password, role) VALUES ('nurse_jones', 'nursepw', 'practitioner')");
+    db.run("INSERT INTO users (username, password, role) VALUES ('reception', 'front_desk', 'staff')");
+
+    db.run("INSERT INTO patient (first_name, last_name, date_of_birth, gender, mobile_phone) VALUES ('John', 'Smith', '1985-03-15', 'Male', '0412345678')");
+    db.run("INSERT INTO patient (first_name, last_name, date_of_birth, gender, mobile_phone) VALUES ('Sarah', 'Connor', '1990-07-22', 'Female', '0423456789')");
+    db.run("INSERT INTO patient (first_name, last_name, date_of_birth, gender, mobile_phone) VALUES ('James', 'Wilson', '1978-11-30', 'Male', '0434567890')");
+    db.run("INSERT INTO patient (first_name, last_name, date_of_birth, gender, mobile_phone) VALUES ('Emily', 'Chen', '2001-01-14', 'Female', '0445678901')");
+    db.run("INSERT INTO patient (first_name, last_name, date_of_birth, gender, mobile_phone) VALUES ('Robert', 'Brown', '1965-09-08', 'Male', '0456789012')");
+
+    db.run("INSERT INTO practitioner (first_name, last_name, practitioner_type) VALUES ('David', 'Smith', 'GP')");
+    db.run("INSERT INTO practitioner (first_name, last_name, practitioner_type) VALUES ('Maria', 'Garcia', 'Nurse')");
+    db.run("INSERT INTO practitioner (first_name, last_name, practitioner_type) VALUES ('Alan', 'Turing', 'Physiotherapist')");
+
+    db.run("INSERT INTO appointment (patient_id, practitioner_id, appointment_date, appointment_time, notes) VALUES (1, 1, '2026-02-15', '09:00', 'General checkup')");
+    db.run("INSERT INTO appointment (patient_id, practitioner_id, appointment_date, appointment_time, notes) VALUES (2, 1, '2026-02-15', '10:30', 'Follow-up blood work')");
+    db.run("INSERT INTO appointment (patient_id, practitioner_id, appointment_date, appointment_time, notes) VALUES (3, 2, '2026-02-16', '14:00', 'Wound dressing change')");
+    db.run("INSERT INTO appointment (patient_id, practitioner_id, appointment_date, appointment_time, notes) VALUES (4, 3, '2026-02-17', '11:00', 'Knee rehabilitation session')");
+    db.run("INSERT INTO appointment (patient_id, practitioner_id, appointment_date, appointment_time, notes) VALUES (1, 1, '2026-03-01', '09:00', 'Results review - CONFIDENTIAL')");
+
+    db.run("INSERT INTO secrets (flag, description) VALUES ('FLAG{sql_injection_is_not_a_feature}', 'Flag 1: Found via UNION extraction')");
+    db.run("INSERT INTO secrets (flag, description) VALUES ('FLAG{blind_as_a_bat_but_still_sees}', 'Flag 2: Found via blind boolean inference')");
+
+    document.getElementById('status').innerHTML = 'SQLite database <span class="ok">LOADED</span> — 5 tables, 19 rows. All queries execute in your browser.';
+}
+
+// Navigation
+function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+}
+
+// Helper: run query and return results as array of objects
+function runQuery(sql) {
+    const results = db.exec(sql);
+    if (results.length === 0) return [];
+    const cols = results[0].columns;
+    return results[0].values.map(row => {
+        const obj = {};
+        cols.forEach((c, i) => obj[c] = row[i]);
+        return obj;
+    });
+}
+
+// Helper: build HTML table from results
+function makeTable(rows) {
+    if (rows.length === 0) return '';
+    const cols = Object.keys(rows[0]);
+    let html = '<table><tr>';
+    cols.forEach(c => html += `<th>${c}</th>`);
+    html += '</tr>';
+    rows.forEach(row => {
+        html += '<tr>';
+        cols.forEach(c => html += `<td>${row[c] !== null ? row[c] : 'NULL'}</td>`);
+        html += '</tr>';
+    });
+    html += '</table>';
+    return html;
+}
+
+// Helper: show executed query
+function showQuery(elementId, sql) {
+    document.getElementById(elementId).innerHTML =
+        `<div class="query-box"><span class="query-label">EXECUTED QUERY:</span>\n${sql}</div>`;
+}
+
+// ──────────────────────────────────────────────
+// LEVEL 1: LOGIN BYPASS
+// ──────────────────────────────────────────────
+function doLogin() {
+    const username = document.getElementById('login-user').value;
+    const password = document.getElementById('login-pass').value;
+
+    // VULNERABLE: string concatenation
+    const sql = `SELECT * FROM users WHERE username = '${username}' AND password = '${password}'`;
+    showQuery('login-query', sql);
+
+    try {
+        const rows = runQuery(sql);
+        if (rows.length > 0) {
+            let html = '<div class="result">ACCESS GRANTED</div>';
+            html += makeTable(rows);
+            document.getElementById('login-result').innerHTML = html;
+        } else {
+            document.getElementById('login-result').innerHTML =
+                '<div class="error">ACCESS DENIED: Invalid credentials</div>';
+        }
+    } catch (e) {
+        document.getElementById('login-result').innerHTML =
+            `<div class="error">SQL ERROR: ${e.message}</div>`;
+    }
+}
+
+// ──────────────────────────────────────────────
+// LEVEL 2: DATA EXTRACTION
+// ──────────────────────────────────────────────
+function doSearch() {
+    const name = document.getElementById('search-name').value;
+
+    // VULNERABLE: direct interpolation in LIKE
+    const sql = `SELECT * FROM patient WHERE first_name LIKE '%${name}%' OR last_name LIKE '%${name}%'`;
+    showQuery('search-query', sql);
+
+    try {
+        const results = db.exec(sql);
+        if (results.length > 0 && results[0].values.length > 0) {
+            const cols = results[0].columns;
+            const rows = results[0].values.map(row => {
+                const obj = {};
+                cols.forEach((c, i) => obj[c] = row[i]);
+                return obj;
+            });
+            document.getElementById('search-result').innerHTML = makeTable(rows);
+        } else {
+            document.getElementById('search-result').innerHTML =
+                '<div class="error">No patients found.</div>';
+        }
+    } catch (e) {
+        document.getElementById('search-result').innerHTML =
+            `<div class="error">SQL ERROR: ${e.message}</div>`;
+    }
+}
+
+// ──────────────────────────────────────────────
+// LEVEL 3: UNION ATTACK
+// ──────────────────────────────────────────────
+function doUnion() {
+    const patientId = document.getElementById('union-id').value;
+
+    // VULNERABLE: no type checking on integer
+    const sql = `SELECT appointment_id, appointment_date, appointment_time, notes FROM appointment WHERE patient_id = ${patientId}`;
+    showQuery('union-query', sql);
+
+    try {
+        const results = db.exec(sql);
+        if (results.length > 0 && results[0].values.length > 0) {
+            const cols = results[0].columns;
+            const rows = results[0].values.map(row => {
+                const obj = {};
+                cols.forEach((c, i) => obj[c] = row[i]);
+                return obj;
+            });
+            document.getElementById('union-result').innerHTML = makeTable(rows);
+        } else {
+            document.getElementById('union-result').innerHTML =
+                '<div class="error">No appointments found for this patient.</div>';
+        }
+    } catch (e) {
+        document.getElementById('union-result').innerHTML =
+            `<div class="error">SQL ERROR: ${e.message}</div>`;
+    }
+}
+
+// ──────────────────────────────────────────────
+// LEVEL 4: BLIND SQLi
+// ──────────────────────────────────────────────
+function doBlind() {
+    const patientId = document.getElementById('blind-id').value;
+
+    // VULNERABLE: boolean-based blind
+    const sql = `SELECT first_name FROM patient WHERE patient_id = ${patientId}`;
+    showQuery('blind-query', sql);
+
+    try {
+        const results = db.exec(sql);
+        if (results.length > 0 && results[0].values.length > 0) {
+            document.getElementById('blind-result').innerHTML =
+                '<div class="result">Patient exists.</div>';
+        } else {
+            document.getElementById('blind-result').innerHTML =
+                '<div class="error">Patient not found.</div>';
+        }
+    } catch (e) {
+        document.getElementById('blind-result').innerHTML =
+            `<div class="error">SQL ERROR: ${e.message}</div>`;
+    }
+}
+
+// Enter key submits forms
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+        const active = document.querySelector('.page.active');
+        if (!active) return;
+        const id = active.id;
+        if (id === 'page-login') doLogin();
+        else if (id === 'page-search') doSearch();
+        else if (id === 'page-union') doUnion();
+        else if (id === 'page-blind') doBlind();
+    }
+});
+
+// Boot
+initDB().catch(e => {
+    document.getElementById('status').innerHTML =
+        `<span style="color:#ff4444">DATABASE INIT FAILED: ${e.message}</span>`;
+});
+</script>
+</body>
+</html>
